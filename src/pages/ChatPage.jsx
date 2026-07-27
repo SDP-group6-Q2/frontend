@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import MessageList from '../components/chat/MessageList';
 import ChatInput from '../components/chat/ChatInput';
+import MessageList from '../components/chat/MessageList';
 import { sendChatMessage } from '../api/chatApi';
 
 const initialMessages = [
   {
     id: crypto.randomUUID(),
     role: 'assistant',
-    content: 'Hello! How can I help you with your AROL machine?',
+    content:
+      'Hello! How can I help you with your AROL machine today?',
   },
 ];
 
@@ -62,37 +63,53 @@ function ChatPage() {
   }
 
   return (
-    <main className="chat-page">
-      <section className="chat-container">
-        <header className="chat-header">
-          <div>
-            <p className="chat-eyebrow">AROL Customer Platform</p>
-            <h1>AI Assistant</h1>
-          </div>
+    <div className="chat-page">
+      <section className="page-header">
+        <div className="page-container">
+          <p className="page-eyebrow">AI support</p>
+          <h1>AROL AI Assistant</h1>
 
-          <span className="status-badge">
-            <span className="status-dot" />
-            Online
-          </span>
-        </header>
-
-        <MessageList
-          messages={messages}
-          isLoading={isLoading}
-        />
-
-        {error && (
-          <p className="chat-error" role="alert">
-            {error}
+          <p>
+            Ask questions about your machine, manuals and technical
+            procedures.
           </p>
-        )}
-
-        <ChatInput
-          onSend={handleSendMessage}
-          disabled={isLoading}
-        />
+        </div>
       </section>
-    </main>
+
+      <section className="chat-section">
+        <div className="page-container chat-page-container">
+          <div className="chat-container">
+            <header className="chat-header">
+              <div>
+                <p className="chat-eyebrow">AROL Customer Platform</p>
+                <h2>AI Assistant</h2>
+              </div>
+
+              <span className="status-badge">
+                <span className="status-dot" />
+                Online
+              </span>
+            </header>
+
+            <MessageList
+              messages={messages}
+              isLoading={isLoading}
+            />
+
+            {error && (
+              <p className="chat-error" role="alert">
+                {error}
+              </p>
+            )}
+
+            <ChatInput
+              onSend={handleSendMessage}
+              disabled={isLoading}
+            />
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 
