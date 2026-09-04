@@ -8,7 +8,7 @@ export const mockDocuments = [
     language: 'English',
     version: '1.0',
     updatedAt: '2026-07-27',
-    fileName: 'arol-use-maintenance-manual.pdf',
-    fileUrl: '/mock-documents/arol-use-maintenance-manual.pdf',
+    fileName: '15610_manual_EN.pdf',
+    fileUrl: '/manuals/15610_manual_EN.pdf',
   },
 ];
