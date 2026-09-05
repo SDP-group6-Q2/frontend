@@ -13,7 +13,10 @@ function DocumentViewerPage() {
       <section className="document-viewer-page">
         <div className="page-container">
           <div className="empty-state">
-            <div className="empty-state-icon" aria-hidden="true">
+            <div
+              className="empty-state-icon"
+              aria-hidden="true"
+            >
               DOC
             </div>
 
@@ -23,7 +26,10 @@ function DocumentViewerPage() {
               The requested document is not available.
             </p>
 
-            <Link to="/documents" className="secondary-button">
+            <Link
+              to="/documents"
+              className="secondary-button"
+            >
               Back to Documents
             </Link>
           </div>
@@ -44,11 +50,16 @@ function DocumentViewerPage() {
             <h1>{document.title}</h1>
 
             <p>
-              {document.machineName} · {document.machineCode}
+              Machine {document.machineCode}
+              {' · '}
+              {document.language}
             </p>
           </div>
 
-          <Link to="/documents" className="viewer-back-button">
+          <Link
+            to="/documents"
+            className="viewer-back-button"
+          >
             Back to Documents
           </Link>
         </div>
@@ -59,7 +70,7 @@ function DocumentViewerPage() {
           <iframe
             className="pdf-viewer"
             src={document.fileUrl}
-            title={document.title}
+            title={`${document.title} - ${document.machineCode}`}
           />
         </div>
       </section>
