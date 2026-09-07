@@ -3,20 +3,27 @@ const API_BASE_URL =
   'http://localhost:8000';
 
 
+function getAuthHeaders() {
+  const token = localStorage.getItem('access_token');
+
+  return token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
+}
+
+
 export async function loginUser(email, password) {
   const response = await fetch(
-    `${API_BASE_URL}/auth/login`,
+    `${API_BASE_URL}/auth/jwt/login`,
     {
       method: 'POST',
 
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
 
-      credentials: 'include',
-
-      body: JSON.stringify({
-        email,
+      body: new URLSearchParams({
+        username: email,
         password,
       }),
     },
@@ -28,20 +35,22 @@ export async function loginUser(email, password) {
 
   if (!response.ok) {
     throw new Error(
-      data?.error ?? 'Unable to sign in',
+      data?.detail ?? 'Unable to sign in',
     );
   }
 
-  return data;
+  localStorage.setItem('access_token', data.access_token);
+
+  return getCurrentUser();
 }
 
 
 export async function getCurrentUser() {
   const response = await fetch(
-    `${API_BASE_URL}/auth/me`,
+    `${API_BASE_URL}/users/me`,
     {
       method: 'GET',
-      credentials: 'include',
+      headers: getAuthHeaders(),
     },
   );
 
@@ -60,19 +69,7 @@ export async function getCurrentUser() {
 
 
 export async function logoutUser() {
-  const response = await fetch(
-    `${API_BASE_URL}/auth/logout`,
-    {
-      method: 'POST',
-      credentials: 'include',
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(
-      'Unable to logout',
-    );
-  }
-
-  return response.json();
+  // The backend's JWT auth is stateless -- there is no server-side session to
+  // invalidate, so "logging out" is just discarding the token client-side.
+  localStorage.removeItem('access_token');
 }

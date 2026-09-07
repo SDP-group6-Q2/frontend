@@ -20,9 +20,9 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function loadUser() {
       try {
-        const response = await getCurrentUser();
+        const currentUser = await getCurrentUser();
 
-        setUser(response?.user ?? null);
+        setUser(currentUser);
       } catch (error) {
         console.error('Unable to load current user:', error);
         setUser(null);
@@ -35,11 +35,11 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(email, password) {
-    const response = await loginUser(email, password);
+    const loggedInUser = await loginUser(email, password);
 
-    setUser(response.user);
+    setUser(loggedInUser);
 
-    return response.user;
+    return loggedInUser;
   }
 
   async function logout() {
