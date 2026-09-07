@@ -16,6 +16,7 @@ function ChatPage() {
   const [messages, setMessages] = useState(initialMessages);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [conversationId, setConversationId] = useState(null);
 
   async function handleSendMessage(content) {
     const trimmedContent = content.trim();
@@ -39,7 +40,18 @@ function ChatPage() {
     setError('');
 
     try {
-      const response = await sendChatMessage(trimmedContent);
+      // TODO: replace with the machine actually selected by the user once a
+      // machine picker exists -- there is no such UI yet.
+      const machineId =
+        localStorage.getItem('machine_id') ?? 'MCH-0001';
+
+      const response = await sendChatMessage(
+        trimmedContent,
+        machineId,
+        conversationId,
+      );
+
+      setConversationId(response.conversationId);
 
       const assistantMessage = {
         id: crypto.randomUUID(),
