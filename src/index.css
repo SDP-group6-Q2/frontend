@@ -438,15 +438,208 @@ button {
   overflow-wrap: anywhere;
 }
 
-.message-bubble p {
-  margin: 0;
+.message-markdown > *:first-child {
+  margin-top: 0;
+}
+
+.message-markdown > *:last-child {
+  margin-bottom: 0;
+}
+
+.message-markdown p {
+  margin: 0 0 10px;
   white-space: pre-wrap;
+}
+
+.message-markdown ul,
+.message-markdown ol {
+  margin: 0 0 10px;
+  padding-left: 22px;
+}
+
+.message-markdown li {
+  margin-bottom: 4px;
+}
+
+.message-markdown a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.message-markdown code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.85em;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.message-markdown pre {
+  margin: 0 0 10px;
+  padding: 12px;
+  border-radius: 10px;
+  overflow-x: auto;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.message-markdown pre code {
+  padding: 0;
+  background: none;
+}
+
+.message-markdown blockquote {
+  margin: 0 0 10px;
+  padding-left: 12px;
+  border-left: 3px solid currentColor;
+  opacity: 0.85;
+}
+
+.message-table-wrapper {
+  position: relative;
+  margin: 0 0 10px;
+  overflow-x: auto;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+}
+
+.message-table-expand-btn {
+  position: sticky;
+  top: 6px;
+  left: 100%;
+  margin: 6px 6px -34px auto;
+  transform: translateX(-100%);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.message-table-expand-btn:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.message-table-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: rgba(9, 20, 33, 0.65);
+  z-index: 1000;
+}
+
+.message-table-overlay-content {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 100%;
+  padding: 52px 20px 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.message-table-overlay-scroll {
+  max-height: calc(100vh - 162px);
+  overflow: auto;
+}
+
+.message-table-overlay-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: #f0f3f5;
+  color: #243b53;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.message-table-overlay-close:hover {
+  background: #e2e8ed;
+}
+
+.message-table-overlay-content .message-markdown th,
+.message-table-overlay-content .message-markdown td {
+  white-space: normal;
+}
+
+.message-markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 340px;
+  font-size: 0.92em;
+}
+
+.message-markdown th,
+.message-markdown td {
+  padding: 7px 12px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-markdown th:not(:last-child),
+.message-markdown td:not(:last-child) {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-markdown thead th {
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+}
+
+.message-markdown tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.message-markdown tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.message-bubble-user .message-table-wrapper {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.message-bubble-user .message-markdown th,
+.message-bubble-user .message-markdown td {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.message-bubble-user .message-markdown thead th,
+.message-bubble-user .message-markdown tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .message-bubble-user {
   color: #ffffff;
   background: #092a46;
   border-bottom-right-radius: 4px;
+}
+
+.message-bubble-user .message-markdown code,
+.message-bubble-user .message-markdown pre {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .message-bubble-assistant {
