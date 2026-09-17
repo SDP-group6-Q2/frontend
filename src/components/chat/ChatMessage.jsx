@@ -1,3 +1,6 @@
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 function ChatMessage({ message }) {
   const isUser = message.role === 'user';
 
@@ -20,7 +23,11 @@ function ChatMessage({ message }) {
             : 'message-bubble-assistant'
         }`}
       >
-        <p>{message.content}</p>
+        <div className="message-markdown">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {message.content}
+          </ReactMarkdown>
+        </div>
       </div>
     </article>
   );
