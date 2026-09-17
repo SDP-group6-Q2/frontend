@@ -6,7 +6,6 @@ function Navbar() {
 
   const {
     user,
-    isAuthenticated,
     logout,
   } = useAuth();
 
@@ -86,56 +85,37 @@ function Navbar() {
         {/* ACCOUNT */}
         <div className="navbar-account">
 
-          {isAuthenticated && user ? (
-            <>
-              <NavLink
-                to="/profile"
-                className={({ isActive }) =>
-                  isActive
-                    ? 'navbar-profile active'
-                    : 'navbar-profile'
-                }
-              >
-                <span className="navbar-profile-avatar">
-                  {user.firstName?.[0]}
-                  {user.lastName?.[0]}
-                </span>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive
+                ? 'navbar-profile active'
+                : 'navbar-profile'
+            }
+          >
+            <span className="navbar-profile-avatar">
+              {user.firstName?.[0]}
+              {user.lastName?.[0]}
+            </span>
 
-                <span className="navbar-profile-text">
-                  <span className="navbar-profile-label">
-                    Profile
-                  </span>
+            <span className="navbar-profile-text">
+              <span className="navbar-profile-label">
+                Profile
+              </span>
 
-                  <span className="navbar-profile-name">
-                    {user.firstName}
-                  </span>
-                </span>
-              </NavLink>
+              <span className="navbar-profile-name">
+                {user.firstName}
+              </span>
+            </span>
+          </NavLink>
 
-              <button
-                type="button"
-                className="navbar-logout"
-                onClick={async function handleLogout() {
-  try {
-    await logout();
-
-    navigate('/');
-  } catch (error) {
-    console.error('Logout failed:', error);
-  }
-}}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <NavLink
-              to="/login"
-              className="navbar-login"
-            >
-              Login
-            </NavLink>
-          )}
+          <button
+            type="button"
+            className="navbar-logout"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
 
         </div>
       </div>

@@ -1,26 +1,14 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ??
-  'http://localhost:8000';
-
-
-function getAuthHeaders() {
-  const token = localStorage.getItem('access_token');
-
-  return token
-    ? { Authorization: `Bearer ${token}` }
-    : {};
-}
+import { apiFetch } from './httpClient';
 
 
 export async function sendChatMessage(message, machineId, conversationId) {
-  const response = await fetch(
-    `${API_BASE_URL}/assistant/`,
+  const response = await apiFetch(
+    '/assistant/',
     {
       method: 'POST',
 
       headers: {
         'Content-Type': 'application/json',
-        ...getAuthHeaders(),
       },
 
       body: JSON.stringify({
@@ -49,11 +37,10 @@ export async function sendChatMessage(message, machineId, conversationId) {
 
 
 export async function getChatHistory(conversationId) {
-  const response = await fetch(
-    `${API_BASE_URL}/assistant/${conversationId}`,
+  const response = await apiFetch(
+    `/assistant/${conversationId}`,
     {
       method: 'GET',
-      headers: getAuthHeaders(),
     },
   );
 

@@ -1,9 +1,7 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ??
-  'http://localhost:8000';
+import { apiFetch } from './httpClient';
 
 export async function getDocuments() {
-  const response = await fetch(`${API_BASE_URL}/documents`);
+  const response = await apiFetch('/documents');
 
   if (!response.ok) {
     throw new Error(

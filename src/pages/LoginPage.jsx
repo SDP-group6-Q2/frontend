@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Navigate,
+  useLocation,
   useNavigate,
 } from 'react-router-dom';
 
@@ -8,6 +9,9 @@ import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname ?? '/';
 
   const {
     login,
@@ -30,7 +34,7 @@ function LoginPage() {
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={from} replace />;
   }
 
   async function handleSubmit(event) {
@@ -41,7 +45,7 @@ function LoginPage() {
 
     try {
       await login(email, password);
-      navigate('/');
+      navigate(from, { replace: true });
     } catch (requestError) {
       setError(requestError.message);
     } finally {

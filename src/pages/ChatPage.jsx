@@ -43,7 +43,7 @@ function ChatPage() {
       // TODO: replace with the machine actually selected by the user once a
       // machine picker exists -- there is no such UI yet.
       const machineId =
-        localStorage.getItem('machine_id') ?? 'MCH-0001';
+        localStorage.getItem('machine_id') ?? 'MCH-0008';
 
       const response = await sendChatMessage(
         trimmedContent,

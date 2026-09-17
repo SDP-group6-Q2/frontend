@@ -27,7 +27,13 @@ function App() {
         />
 
         {/* MAIN LAYOUT */}
-        <Route element={<MainLayout />}>
+        <Route
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
 
           <Route
             path="/"
@@ -49,14 +55,9 @@ function App() {
             element={<DocumentViewerPage />}
           />
 
-          {/* PROFILE */}
           <Route
             path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
+            element={<ProfilePage />}
           />
 
         </Route>
