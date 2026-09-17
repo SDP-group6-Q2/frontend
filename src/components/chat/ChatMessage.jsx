@@ -1,6 +1,16 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+const markdownComponents = {
+  table({ children }) {
+    return (
+      <div className="message-table-wrapper">
+        <table>{children}</table>
+      </div>
+    );
+  },
+};
+
 function ChatMessage({ message }) {
   const isUser = message.role === 'user';
 
@@ -24,7 +34,10 @@ function ChatMessage({ message }) {
         }`}
       >
         <div className="message-markdown">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={markdownComponents}
+          >
             {message.content}
           </ReactMarkdown>
         </div>
