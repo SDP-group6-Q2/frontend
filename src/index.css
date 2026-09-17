@@ -496,10 +496,90 @@ button {
 }
 
 .message-table-wrapper {
+  position: relative;
   margin: 0 0 10px;
   overflow-x: auto;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
+}
+
+.message-table-expand-btn {
+  position: sticky;
+  top: 6px;
+  left: 100%;
+  margin: 6px 6px -34px auto;
+  transform: translateX(-100%);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.message-table-expand-btn:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.message-table-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: rgba(9, 20, 33, 0.65);
+  z-index: 1000;
+}
+
+.message-table-overlay-content {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 100%;
+  padding: 52px 20px 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.message-table-overlay-scroll {
+  max-height: calc(100vh - 162px);
+  overflow: auto;
+}
+
+.message-table-overlay-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: #f0f3f5;
+  color: #243b53;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.message-table-overlay-close:hover {
+  background: #e2e8ed;
+}
+
+.message-table-overlay-content .message-markdown th,
+.message-table-overlay-content .message-markdown td {
+  white-space: normal;
 }
 
 .message-markdown table {
