@@ -34,6 +34,18 @@ export function AuthProvider({ children }) {
     loadUser();
   }, []);
 
+  useEffect(() => {
+    function handleSessionExpired() {
+      setUser(null);
+    }
+
+    window.addEventListener('arol:session-expired', handleSessionExpired);
+
+    return () => {
+      window.removeEventListener('arol:session-expired', handleSessionExpired);
+    };
+  }, []);
+
   async function login(email, password) {
     const loggedInUser = await loginUser(email, password);
 
