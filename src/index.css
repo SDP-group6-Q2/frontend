@@ -1795,3 +1795,34 @@ button {
   .page-header p:not(.page-eyebrow){font-size:.98rem}.feature-section{padding-bottom:2.5rem}
 }
 @media (prefers-reduced-motion:reduce){.page-transition,.service-card,.service-card::before,.record-card,.nav-drawer,.nav-overlay,.nav-toggle span{animation:none!important;transition:none!important}}
+
+/* Access-aware data filters */
+.filter-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:12px;align-items:end;margin:0 0 24px;padding:16px;background:#fff;border:1px solid #dfe6eb;border-radius:16px;box-shadow:0 8px 24px rgba(16,42,67,.06)}
+.filter-bar label{display:flex;flex-direction:column;gap:7px;color:#334e68;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.filter-bar input,.filter-bar select{width:100%;min-height:42px;padding:9px 11px;border:1px solid #cbd5dc;border-radius:10px;background:#fff;color:#102a43;font:inherit;text-transform:none;letter-spacing:0;font-weight:500}
+.filter-bar input:focus,.filter-bar select:focus{outline:2px solid rgba(232,160,60,.25);border-color:#e8a03c}
+.filter-clear{min-height:42px;padding:0 16px;border:1px solid #cbd5dc;border-radius:10px;background:#fff;color:#334e68;font-weight:800;cursor:pointer}
+.filter-clear:hover{border-color:#e8a03c;color:#c77f1e}
+.order-card{border-top:4px solid #e8a03c}
+.manual-shell button.secondary-button{align-self:flex-start;cursor:pointer}
+.manual-shell button.secondary-button:disabled{opacity:.6;cursor:wait}
+@media(max-width:900px){.filter-bar{grid-template-columns:repeat(2,minmax(0,1fr))}.filter-clear{width:100%}}
+@media(max-width:600px){.filter-bar{grid-template-columns:1fr;padding:14px}.filter-clear{min-height:46px}}
+
+/* Filter dropdowns */
+.filter-bar select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 36px 0 12px;
+  border: 1px solid #cbd5df;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #102a43;
+  font: inherit;
+  cursor: pointer;
+}
+
+.filter-bar select:focus {
+  outline: 2px solid rgba(232, 160, 60, 0.25);
+  border-color: #e8a03c;
+}
