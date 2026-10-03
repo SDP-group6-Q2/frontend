@@ -11,22 +11,27 @@ import MainLayout from './components/layout/MainLayout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ChatPage from './pages/ChatPage.jsx';
-import DocumentsPage from './pages/DocumentsPage.jsx';
-import DocumentViewerPage from './pages/DocumentViewerPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 
-function App() {
+import MachinesPage from './pages/MachinesPage.jsx';
+import MachinePage from './pages/MachinePage.jsx';
+import MachineChatPage from './pages/MachineChatPage.jsx';
+import ManualPage from './pages/ManualPage.jsx';
+
+import AlarmsPage from './pages/AlarmsPage.jsx';
+import TicketsPage from './pages/TicketsPage.jsx';
+import OrdersPage from './pages/OrdersPage.jsx';
+import QrScannerPage from './pages/QrScannerPage.jsx';
+
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* LOGIN */}
         <Route
           path="/login"
           element={<LoginPage />}
         />
 
-        {/* MAIN LAYOUT */}
         <Route
           element={
             <ProtectedRoute>
@@ -34,48 +39,32 @@ function App() {
             </ProtectedRoute>
           }
         >
+          <Route path="/" element={<HomePage />} />
 
+          <Route path="/machines" element={<MachinesPage />} />
+          <Route path="/machines/:machineId" element={<MachinePage />} />
           <Route
-            path="/"
-            element={<HomePage />}
+            path="/machines/:machineId/assistant"
+            element={<MachineChatPage />}
+          />
+          <Route
+            path="/machines/:machineId/manual"
+            element={<ManualPage />}
           />
 
-          <Route
-            path="/chat"
-            element={<ChatPage />}
-          />
-
-          <Route
-            path="/documents"
-            element={<DocumentsPage />}
-          />
-
-          <Route
-            path="/documents/:documentId"
-            element={<DocumentViewerPage />}
-          />
-
-          <Route
-            path="/profile"
-            element={<ProfilePage />}
-          />
-
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/alarms" element={<AlarmsPage />} />
+          <Route path="/tickets" element={<TicketsPage />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/scanner" element={<QrScannerPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
-        {/* FALLBACK */}
         <Route
           path="*"
-          element={
-            <Navigate
-              to="/"
-              replace
-            />
-          }
+          element={<Navigate to="/" replace />}
         />
-
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;

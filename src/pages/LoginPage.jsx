@@ -21,6 +21,7 @@ function LoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -133,9 +134,10 @@ function LoginPage() {
                   Password
                 </label>
 
+                <div className="password-field">
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(event) =>
                     setPassword(event.target.value)
@@ -144,6 +146,10 @@ function LoginPage() {
                   autoComplete="current-password"
                   required
                 />
+                <button type="button" className="password-toggle" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? 'Hide password' : 'Show password'}>
+                  {showPassword ? 'Hide' : 'Show'}
+                </button>
+                </div>
               </div>
 
               {error && (

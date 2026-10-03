@@ -52,7 +52,14 @@ export async function getCurrentUser() {
     );
   }
 
-  return response.json();
+  const user = await response.json();
+  return {
+    ...user,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    jobTitle: user.job_title,
+    clientId: user.client_id,
+  };
 }
 
 

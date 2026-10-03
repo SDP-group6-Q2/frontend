@@ -1,31 +1,62 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+
 import { useAuth } from '../../context/AuthContext.jsx';
 
-function Navbar() {
+const links = [
+  ['Dashboard', '/'],
+  ['Machines', '/machines'],
+  ['Alarms', '/alarms'],
+  ['Tickets', '/tickets'],
+  ['Orders', '/orders'],
+  ['QR Scanner', '/scanner'],
+  ['AI Assistant', '/chat'],
+];
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const {
-    user,
-    logout,
-  } = useAuth();
+  const close = () => {
+    setOpen(false);
+  };
 
-  async function handleLogout() {
-    try {
-      await logout();
-      navigate('/');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
+  useEffect(() => {
+    close();
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', open);
+
+    return () => {
+      document.body.classList.remove('menu-open');
+    };
+  }, [open]);
+
+  async function signOut() {
+    await logout();
+
+    close();
+
+    navigate('/login', {
+      replace: true,
+    });
   }
 
   return (
     <header className="navbar">
       <div className="navbar-container">
-
-        {/* BRAND */}
         <NavLink
           to="/"
           className="navbar-brand"
+          onClick={close}
         >
           <span className="navbar-brand-mark">
             A
@@ -42,85 +73,76 @@ function Navbar() {
           </div>
         </NavLink>
 
-        {/* NAVIGATION */}
-        <nav
-          className="navbar-links"
-          aria-label="Main navigation"
+        <button
+          className={`nav-toggle ${open ? 'open' : ''}`}
+          onClick={() => setOpen((current) => !current)}
+          aria-expanded={open}
+          aria-label={
+            open
+              ? 'Close navigation'
+              : 'Open navigation'
+          }
         >
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              isActive
-                ? 'navbar-link active'
-                : 'navbar-link'
-            }
-          >
-            Home
-          </NavLink>
+          <span />
+          <span />
+          <span />
+        </button>
 
-          <NavLink
-            to="/documents"
-            className={({ isActive }) =>
-              isActive
-                ? 'navbar-link active'
-                : 'navbar-link'
-            }
-          >
-            Documents
-          </NavLink>
+        <button
+          className={`nav-overlay ${open ? 'open' : ''}`}
+          onClick={close}
+          aria-label="Close navigation"
+          tabIndex={open ? 0 : -1}
+        />
 
-          <NavLink
-            to="/chat"
-            className={({ isActive }) =>
-              isActive
-                ? 'navbar-link active'
-                : 'navbar-link'
-            }
-          >
-            AI Assistant
-          </NavLink>
-        </nav>
+        <div className={`nav-drawer ${open ? 'open' : ''}`}>
+          <nav className="navbar-links">
+            {links.map(([label, path]) => (
+              <NavLink
+                key={path}
+                to={path}
+                end={path === '/'}
+                onClick={close}
+                className={({ isActive }) =>
+                  `navbar-link${isActive ? ' active' : ''}`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+          </nav>
 
-        {/* ACCOUNT */}
-        <div className="navbar-account">
-
-          <NavLink
-            to="/profile"
-            className={({ isActive }) =>
-              isActive
-                ? 'navbar-profile active'
-                : 'navbar-profile'
-            }
-          >
-            <span className="navbar-profile-avatar">
-              {user.firstName?.[0]}
-              {user.lastName?.[0]}
-            </span>
-
-            <span className="navbar-profile-text">
-              <span className="navbar-profile-label">
-                Profile
+          <div className="navbar-account">
+            <NavLink
+              to="/profile"
+              onClick={close}
+              className="navbar-profile"
+            >
+              <span className="navbar-profile-avatar">
+                {user?.firstName?.[0] ??
+                  user?.email?.[0]?.toUpperCase()}
               </span>
 
-              <span className="navbar-profile-name">
-                {user.firstName}
+              <span className="navbar-profile-text">
+                <span className="navbar-profile-label">
+                  Profile
+                </span>
+
+                <span className="navbar-profile-name">
+                  {user?.firstName || user?.email}
+                </span>
               </span>
-            </span>
-          </NavLink>
+            </NavLink>
 
-          <button
-            type="button"
-            className="navbar-logout"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-
+            <button
+              className="navbar-logout"
+              onClick={signOut}
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
     </header>
   );
 }
-
-export default Navbar;

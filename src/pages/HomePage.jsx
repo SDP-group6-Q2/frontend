@@ -1,71 +1,107 @@
 import { Link } from 'react-router-dom';
 
-function HomePage() {
+const services = [
+  [
+    'Machines',
+    '/machines',
+    'Company fleet and machine overview.',
+    'machines.png',
+  ],
+  [
+    'Alarms',
+    '/alarms',
+    'Review alarms across your fleet.',
+    'alarm.png',
+  ],
+  [
+    'Tickets',
+    '/tickets',
+    'Check maintenance tickets.',
+    'ticket.png',
+  ],
+  [
+    'Orders',
+    '/orders',
+    'Track company orders.',
+    'orders.png',
+  ],
+  [
+    'QR Scanner',
+    '/scanner',
+    'Open a machine from its QR code.',
+    'qr.png',
+  ],
+  [
+    'AI Assistant',
+    '/chat',
+    'Ask company-wide questions.',
+    'ai-assistant.png',
+  ],
+];
+
+export default function HomePage() {
   return (
-    <div className="home-page">
+    <div>
       <section className="home-hero">
         <div className="page-container">
-          <p className="page-eyebrow">AROL Customer Platform</p>
+          <p className="page-eyebrow">
+            AROL Customer Platform
+          </p>
 
-          <h1>Your machine information, all in one place.</h1>
+          <h1>
+            Your fleet, service and support in one place.
+          </h1>
 
           <p className="home-hero-description">
-            Access technical documentation and use the AI assistant
-            to receive support about your AROL machines.
+            Access your machines, orders, alarms and tickets,
+            or ask the AI assistant for support.
           </p>
+
+          <div className="action-row">
+            <Link
+              className="primary-button"
+              to="/machines"
+            >
+              View machines
+            </Link>
+
+            <Link
+              className="secondary-button"
+              to="/chat"
+            >
+              Ask AI
+            </Link>
+          </div>
         </div>
       </section>
 
       <section className="home-services">
         <div className="page-container">
-          <div className="section-heading">
-            <p className="page-eyebrow">Platform services</p>
-            <h2>How can we help you?</h2>
-          </div>
-
           <div className="service-grid">
-            <article className="service-card">
-              <div className="service-icon" aria-hidden="true">
-                AI
-              </div>
+            {services.map(
+              ([title, path, description, image]) => (
+                <Link
+                  to={path}
+                  className="service-card"
+                  key={path}
+                  style={{
+                    '--card-image': `url(/dashboard/${image})`,
+                  }}
+                >
+                  <div className="service-card-content">
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
 
-              <div className="service-card-content">
-                <h3>AI Assistant</h3>
-
-                <p>
-                  Ask questions about your machine, technical
-                  documentation and maintenance procedures.
-                </p>
-              </div>
-
-              <Link to="/chat" className="primary-button">
-                Open AI Assistant
-              </Link>
-            </article>
-
-            <article className="service-card">
-              <div className="service-icon" aria-hidden="true">
-                DOC
-              </div>
-
-              <div className="service-card-content">
-                <h3>Machine Documents</h3>
-
-                <p>
-                  Access machine manuals and technical documents
-                  available for your equipment.
-                </p>
-              </div>
-
-              <Link to="/documents" className="secondary-button">
-                Open Documents
-              </Link>
-            </article>
+                  <span className="text-link">
+                    Open
+                  </span>
+                </Link>
+              ),
+            )}
           </div>
         </div>
       </section>
     </div>
   );
 }
-
-export default HomePage;

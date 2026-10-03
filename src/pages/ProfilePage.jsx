@@ -48,7 +48,7 @@ function ProfilePage() {
 
               <div className="profile-company-summary">
                 <span>Company</span>
-                <strong>{user.companyId}</strong>
+                <strong>{user.clientId}</strong>
               </div>
             </aside>
 
@@ -96,12 +96,12 @@ function ProfilePage() {
 
                 <div className="profile-detail-item">
                   <dt>User ID</dt>
-                  <dd>{user.userId}</dd>
+                  <dd>{user.id}</dd>
                 </div>
 
                 <div className="profile-detail-item">
-                  <dt>Company ID</dt>
-                  <dd>{user.companyId}</dd>
+                  <dt>Client ID</dt>
+                  <dd>{user.clientId}</dd>
                 </div>
               </dl>
             </section>
