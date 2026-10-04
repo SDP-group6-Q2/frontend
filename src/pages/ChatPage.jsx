@@ -40,14 +40,9 @@ function ChatPage() {
     setError('');
 
     try {
-      // TODO: replace with the machine actually selected by the user once a
-      // machine picker exists -- there is no such UI yet.
-      const machineId =
-        localStorage.getItem('machine_id') ?? 'MCH-0001';
-
       const response = await sendChatMessage(
         trimmedContent,
-        machineId,
+        null,
         conversationId,
       );
 
@@ -82,8 +77,7 @@ function ChatPage() {
           <h1>AROL AI Assistant</h1>
 
           <p>
-            Ask questions about your machine, manuals and technical
-            procedures.
+            Ask company-wide questions about machines, orders, tickets and support.
           </p>
         </div>
       </section>

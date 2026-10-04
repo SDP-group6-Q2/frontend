@@ -1,71 +1,20 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 
-function HomePage() {
-  return (
-    <div className="home-page">
-      <section className="home-hero">
-        <div className="page-container">
-          <p className="page-eyebrow">AROL Customer Platform</p>
+const SERVICES = [
+  { title:'Machines', path:'/machines', description:'Company fleet and machine overview.', image:'machines.png', service:'machines' },
+  { title:'Alarms', path:'/alarms', description:'Review alarms across your fleet.', image:'alarm.png', service:'operations' },
+  { title:'Tickets', path:'/tickets', description:'Check maintenance tickets.', image:'ticket.png', service:'operations' },
+  { title:'Orders', path:'/orders', description:'Track company orders.', image:'orders.png', service:'commercial' },
+  { title:'QR Scanner', path:'/scanner', description:'Open a machine from its QR code.', image:'qr.png', service:'scanner' },
+  { title:'AI Assistant', path:'/chat', description:'Ask company-wide questions.', image:'ai-assistant.png', service:'assistant' },
+];
 
-          <h1>Your machine information, all in one place.</h1>
-
-          <p className="home-hero-description">
-            Access technical documentation and use the AI assistant
-            to receive support about your AROL machines.
-          </p>
-        </div>
-      </section>
-
-      <section className="home-services">
-        <div className="page-container">
-          <div className="section-heading">
-            <p className="page-eyebrow">Platform services</p>
-            <h2>How can we help you?</h2>
-          </div>
-
-          <div className="service-grid">
-            <article className="service-card">
-              <div className="service-icon" aria-hidden="true">
-                AI
-              </div>
-
-              <div className="service-card-content">
-                <h3>AI Assistant</h3>
-
-                <p>
-                  Ask questions about your machine, technical
-                  documentation and maintenance procedures.
-                </p>
-              </div>
-
-              <Link to="/chat" className="primary-button">
-                Open AI Assistant
-              </Link>
-            </article>
-
-            <article className="service-card">
-              <div className="service-icon" aria-hidden="true">
-                DOC
-              </div>
-
-              <div className="service-card-content">
-                <h3>Machine Documents</h3>
-
-                <p>
-                  Access machine manuals and technical documents
-                  available for your equipment.
-                </p>
-              </div>
-
-              <Link to="/documents" className="secondary-button">
-                Open Documents
-              </Link>
-            </article>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+export default function HomePage() {
+  const { canAccess } = useAuth();
+  const services = SERVICES.filter(({service}) => canAccess(service));
+  return <div>
+    <section className="home-hero"><div className="page-container"><p className="page-eyebrow">AROL Customer Platform</p><h1>Your fleet, service and support in one place.</h1><p className="home-hero-description">Access the services available for your company account and ask the AI assistant for support.</p><div className="action-row"><Link className="primary-button" to="/machines">View machines</Link><Link className="secondary-button" to="/chat">Ask AI</Link></div></div></section>
+    <section className="home-services"><div className="page-container"><div className="service-grid">{services.map(({title,path,description,image}) => <Link to={path} className="service-card" key={path} style={{'--card-image':`url(/dashboard/${image})`}}><div className="service-card-content"><h3>{title}</h3><p>{description}</p><span className="text-link">Open</span></div></Link>)}</div></div></section>
+  </div>;
 }
-
-export default HomePage;

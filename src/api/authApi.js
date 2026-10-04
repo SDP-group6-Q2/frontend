@@ -1,20 +1,9 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ??
-  'http://localhost:8000';
-
-
-function getAuthHeaders() {
-  const token = localStorage.getItem('access_token');
-
-  return token
-    ? { Authorization: `Bearer ${token}` }
-    : {};
-}
+import { apiFetch } from './httpClient';
 
 
 export async function loginUser(email, password) {
-  const response = await fetch(
-    `${API_BASE_URL}/auth/jwt/login`,
+  const response = await apiFetch(
+    '/auth/jwt/login',
     {
       method: 'POST',
 
@@ -46,11 +35,10 @@ export async function loginUser(email, password) {
 
 
 export async function getCurrentUser() {
-  const response = await fetch(
-    `${API_BASE_URL}/users/me`,
+  const response = await apiFetch(
+    '/users/me',
     {
       method: 'GET',
-      headers: getAuthHeaders(),
     },
   );
 
@@ -64,7 +52,14 @@ export async function getCurrentUser() {
     );
   }
 
-  return response.json();
+  const user = await response.json();
+  return {
+    ...user,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    jobTitle: user.job_title,
+    clientId: user.client_id,
+  };
 }
 
 

@@ -1,0 +1,18 @@
+import { useEffect, useMemo, useState } from 'react';
+import { getTickets } from '../api/ticketsApi';
+const PAGE_SIZE=8;
+const tone=(v='')=>/(closed|resolved|complete|low)/i.test(v)?'success':/(critical|urgent|high|fail)/i.test(v)?'danger':/(open|progress|medium|pending)/i.test(v)?'warning':'neutral';
+export default function TicketsPage(){
+ const [rows,setRows]=useState([]),[loading,setLoading]=useState(true),[error,setError]=useState(''),[page,setPage]=useState(1);
+ const [filters,setFilters]=useState({status:'',priority:'',since:'',until:''});
+ const [options,setOptions]=useState({status:[],priority:[]});
+ useEffect(()=>{setLoading(true);setError('');getTickets(filters).then(d=>{const nextRows=d.rows??[];setRows(nextRows);setOptions(current=>({status:[...new Set([...current.status,...nextRows.map(t=>t.ticket_status).filter(Boolean)])].sort(),priority:[...new Set([...current.priority,...nextRows.map(t=>t.priority).filter(Boolean)])].sort()}));setPage(1)}).catch(e=>setError(e.message)).finally(()=>setLoading(false))},[filters]);
+ const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE)); const visible=useMemo(()=>rows.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE),[rows,page]);
+ const change=(e)=>setFilters(f=>({...f,[e.target.name]:e.target.value}));
+ return <div><section className="page-header"><div className="page-container"><p className="page-eyebrow">Service</p><h1>Tickets</h1><p>Maintenance tickets for your company’s machines.</p></div></section><section className="feature-section"><div className="page-container">
+ <div className="filter-bar"><label>Status<select name="status" value={filters.status} onChange={change}><option value="">All statuses</option>{options.status.map(value=><option key={value} value={value}>{value}</option>)}</select></label><label>Priority<select name="priority" value={filters.priority} onChange={change}><option value="">All priorities</option>{options.priority.map(value=><option key={value} value={value}>{value}</option>)}</select></label><label>From<input type="date" name="since" value={filters.since} onChange={change}/></label><label>To<input type="date" name="until" value={filters.until} onChange={change}/></label><button className="filter-clear" onClick={()=>setFilters({status:'',priority:'',since:'',until:''})}>Clear</button></div>
+ {loading?<Empty title="Loading tickets…"/>:error?<Empty title="Unable to load tickets" text={error}/>:!rows.length?<Empty title="No tickets" text="No tickets match the selected filters."/>:<><div className="records-grid">{visible.map(t=><article className="record-card" key={t.id}><div className="record-card-top"><span className={`status-pill ${tone(t.ticket_status)}`}>{t.ticket_status||'Unknown'}</span><span className={`status-pill soft ${tone(t.priority)}`}>{t.priority||'No priority'}</span></div><h2>{t.id}</h2><p className="record-description">{t.ticket_type||'Maintenance ticket'}</p><dl className="record-details"><div><dt>Machine</dt><dd>{t.machine_id||'—'}</dd></div><div><dt>Created</dt><dd>{t.created_date||'—'}</dd></div></dl></article>)}</div><Pagination page={page} pages={pages} setPage={setPage}/></>}
+ </div></section></div>;
+}
+function Empty({title,text}){return <div className="empty-state"><h2>{title}</h2>{text&&<p>{text}</p>}</div>}
+function Pagination({page,pages,setPage}){if(pages<=1)return null;return <nav className="pagination"><button disabled={page===1} onClick={()=>setPage(page-1)}>Previous</button>{Array.from({length:pages},(_,i)=>i+1).map(n=><button key={n} className={n===page?'active':''} onClick={()=>setPage(n)}>{n}</button>)}<button disabled={page===pages} onClick={()=>setPage(page+1)}>Next</button></nav>}

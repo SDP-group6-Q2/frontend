@@ -1,146 +1,49 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 
-function Navbar() {
+const LINKS = [
+  { label: 'Dashboard', path: '/' },
+  { label: 'Machines', path: '/machines', service: 'machines' },
+  { label: 'Alarms', path: '/alarms', service: 'operations' },
+  { label: 'Tickets', path: '/tickets', service: 'operations' },
+  { label: 'Orders', path: '/orders', service: 'commercial' },
+  { label: 'QR Scanner', path: '/scanner', service: 'scanner' },
+  { label: 'AI Assistant', path: '/chat', service: 'assistant' },
+];
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const { user, logout, canAccess } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const links = useMemo(() => LINKS.filter((link) => !link.service || canAccess(link.service)), [canAccess]);
 
-  const {
-    user,
-    isAuthenticated,
-    logout,
-  } = useAuth();
+  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', open);
+    return () => document.body.classList.remove('menu-open');
+  }, [open]);
 
-  async function handleLogout() {
-    try {
-      await logout();
-      navigate('/');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  }
-
-  return (
-    <header className="navbar">
-      <div className="navbar-container">
-
-        {/* BRAND */}
-        <NavLink
-          to="/"
-          className="navbar-brand"
-        >
-          <span className="navbar-brand-mark">
-            A
-          </span>
-
-          <div className="navbar-brand-text">
-            <span className="navbar-brand-name">
-              AROL
-            </span>
-
-            <span className="navbar-brand-subtitle">
-              Customer Platform
-            </span>
-          </div>
-        </NavLink>
-
-        {/* NAVIGATION */}
-        <nav
-          className="navbar-links"
-          aria-label="Main navigation"
-        >
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              isActive
-                ? 'navbar-link active'
-                : 'navbar-link'
-            }
-          >
-            Home
-          </NavLink>
-
-          <NavLink
-            to="/documents"
-            className={({ isActive }) =>
-              isActive
-                ? 'navbar-link active'
-                : 'navbar-link'
-            }
-          >
-            Documents
-          </NavLink>
-
-          <NavLink
-            to="/chat"
-            className={({ isActive }) =>
-              isActive
-                ? 'navbar-link active'
-                : 'navbar-link'
-            }
-          >
-            AI Assistant
-          </NavLink>
-        </nav>
-
-        {/* ACCOUNT */}
-        <div className="navbar-account">
-
-          {isAuthenticated && user ? (
-            <>
-              <NavLink
-                to="/profile"
-                className={({ isActive }) =>
-                  isActive
-                    ? 'navbar-profile active'
-                    : 'navbar-profile'
-                }
-              >
-                <span className="navbar-profile-avatar">
-                  {user.firstName?.[0]}
-                  {user.lastName?.[0]}
-                </span>
-
-                <span className="navbar-profile-text">
-                  <span className="navbar-profile-label">
-                    Profile
-                  </span>
-
-                  <span className="navbar-profile-name">
-                    {user.firstName}
-                  </span>
-                </span>
-              </NavLink>
-
-              <button
-                type="button"
-                className="navbar-logout"
-                onClick={async function handleLogout() {
-  try {
+  async function signOut() {
     await logout();
-
-    navigate('/');
-  } catch (error) {
-    console.error('Logout failed:', error);
+    setOpen(false);
+    navigate('/login', { replace: true });
   }
-}}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <NavLink
-              to="/login"
-              className="navbar-login"
-            >
-              Login
-            </NavLink>
-          )}
 
-        </div>
+  return <header className="navbar"><div className="navbar-container">
+    <NavLink to="/" className="navbar-brand" onClick={() => setOpen(false)}>
+      <span className="navbar-brand-mark">A</span>
+      <div className="navbar-brand-text"><span className="navbar-brand-name">AROL</span><span className="navbar-brand-subtitle">Customer Platform</span></div>
+    </NavLink>
+    <button className={`nav-toggle ${open ? 'open' : ''}`} onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label={open ? 'Close navigation' : 'Open navigation'}><span/><span/><span/></button>
+    <button className={`nav-overlay ${open ? 'open' : ''}`} onClick={() => setOpen(false)} aria-label="Close navigation" tabIndex={open ? 0 : -1}/>
+    <div className={`nav-drawer ${open ? 'open' : ''}`}>
+      <nav className="navbar-links">{links.map(({ label, path }) => <NavLink key={path} to={path} end={path === '/'} className={({isActive}) => `navbar-link${isActive ? ' active' : ''}`}>{label}</NavLink>)}</nav>
+      <div className="navbar-account">
+        <NavLink to="/profile" className="navbar-profile"><span className="navbar-profile-avatar">{user?.firstName?.[0] ?? user?.email?.[0]?.toUpperCase()}</span><span className="navbar-profile-text"><span className="navbar-profile-label">Profile</span><span className="navbar-profile-name">{user?.firstName || user?.email}</span></span></NavLink>
+        <button className="navbar-logout" onClick={signOut}>Logout</button>
       </div>
-    </header>
-  );
+    </div>
+  </div></header>;
 }
-
-export default Navbar;
