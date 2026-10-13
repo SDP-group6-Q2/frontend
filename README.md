@@ -25,11 +25,11 @@ The repository also contains an **older Node/Express server and PostgreSQL seedi
 ```text
 frontend/
 ├── public/
-│   ├── dashboard/             # Dashboard card background images
-│   ├── manuals/               # Bundled PDF assets
+│   ├── dashboard/            
+│   ├── manuals/               
 │   ├── favicon.png
 │   └── icons.svg
-├── server/                    # Legacy Express/auth/database utilities
+├── server/                    
 │   ├── db/
 │   ├── middleware/
 │   ├── routes/
@@ -76,8 +76,8 @@ frontend/
 │   │   ├── OrdersPage.jsx
 │   │   ├── QrScannerPage.jsx
 │   │   ├── ProfilePage.jsx
-│   │   ├── DocumentsPage.jsx       # Existing, not registered in App routes
-│   │   └── DocumentViewerPage.jsx  # Existing, not registered in App routes
+│   │   ├── DocumentsPage.jsx       
+│   │   └── DocumentViewerPage.jsx  
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
